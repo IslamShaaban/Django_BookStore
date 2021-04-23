@@ -4,7 +4,6 @@
     <h1>Books List</h1>
     {% for book in books %}
         <h2>Title: {{book.title}}</h2>
-        <p>Book Category: {{book.category}}</p>
         <p>Book Author: {{book.author}}</p>
         <a href="{% url 'edit' book.id %}">Edit</a>
         <a href="{% url 'delete' book.id %}">Delete</a>
