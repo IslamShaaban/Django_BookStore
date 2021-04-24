@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from .forms import BookForm
 from .models import Book
-
+from django.contrib.auth.decorators import login_required, permission_required
 # Create your views here.
-
 #Index Function to get All Books
+@login_required
+@permission_required(['books.view_book'], raise_exception=True)
 def index(request):
     books = Book.objects.all()
     return render(request, 'books/index.html', {
@@ -12,6 +13,8 @@ def index(request):
     })
 
 #Create Function to Create New Book
+@login_required
+@permission_required(['books.view_book'], raise_exception=True)
 def create(request):
     bookForm = BookForm(request.POST or None)
     if bookForm.is_valid():
@@ -23,6 +26,7 @@ def create(request):
         })
         
 #Edit Function to Edit Certain Book
+@login_required
 def edit(request, id):
     book = Book.objects.get(pk=id)
     form = BookForm(request.POST or None, instance=book)
@@ -35,6 +39,7 @@ def edit(request, id):
     })
 
 #Delete Function to Delete Certain Book
+@login_required
 def delete(request, id): 
     book = Book.objects.get(pk=id)
     book.delete()
